@@ -59,7 +59,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger
             {
                 throw new Exception(string.Format("Cannot connect to Storage Queue {0}: {1}",attribute.QueueName, ex.Message));
             }
-            return Task.FromResult<ITriggerBinding>(new GroupQueueTriggerBinding(parameter, queue, poisonQueue, attribute.GroupSize));
+            return Task.FromResult<ITriggerBinding>(new GroupQueueTriggerBinding(parameter, queue, poisonQueue, attribute.GroupSize, attribute.MinQueuePollingInterval, attribute.MaxQueuePollingInterval));
         }
 
         /// <summary>
@@ -79,10 +79,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger
         {
             private readonly ParameterInfo _parameter;
             private readonly int _groupSize;
+            private readonly int _intervalMin;
+            private readonly int _intervalMax;
             private readonly IBindingDataProvider _bindingDataProvider;
             private readonly WindowsAzure.Storage.Queue.CloudQueue _queue;
             private readonly WindowsAzure.Storage.Queue.CloudQueue _poisonQueue;
-            public GroupQueueTriggerBinding(ParameterInfo parameter, WindowsAzure.Storage.Queue.CloudQueue queue, WindowsAzure.Storage.Queue.CloudQueue poisonQueue, int groupSize)
+            public GroupQueueTriggerBinding(ParameterInfo parameter, WindowsAzure.Storage.Queue.CloudQueue queue, WindowsAzure.Storage.Queue.CloudQueue poisonQueue, int groupSize, int intervalMin, int intervalMax)
             {
                 //Support for List<POCO> types only
                 _bindingDataProvider = BindingDataProvider.FromType(parameter.ParameterType);
@@ -90,6 +92,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger
                 _queue = queue;
                 _poisonQueue = poisonQueue;
                 _groupSize = groupSize;
+                _intervalMin = intervalMin;
+                _intervalMax = intervalMax;
             }
             
             /// <summary>
@@ -143,7 +147,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger
             /// <returns></returns>
             public Task<IListener> CreateListenerAsync(ListenerFactoryContext context)
             {
-                return Task.FromResult<IListener>(new GroupQueueListener(context.Executor, _parameter,_queue,_poisonQueue, _groupSize));
+                return Task.FromResult<IListener>(new GroupQueueListener(context.Executor, _parameter,_queue,_poisonQueue, _groupSize, _intervalMin, _intervalMax));
             }
 
             /// <summary>
@@ -229,7 +233,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger
                 private TaskCompletionSource<object> _stopWaitingTaskSource;
                 private RandomizedExponentialBackoffStrategy _delayStrategy;
                 private readonly int _maxDequeueCount = 100;
-                public GroupQueueListener(ITriggeredFunctionExecutor executor, ParameterInfo triggerParameter, WindowsAzure.Storage.Queue.CloudQueue queue, WindowsAzure.Storage.Queue.CloudQueue poisonQueue, int groupSize)
+                public GroupQueueListener(ITriggeredFunctionExecutor executor, ParameterInfo triggerParameter, WindowsAzure.Storage.Queue.CloudQueue queue, WindowsAzure.Storage.Queue.CloudQueue poisonQueue, int groupSize, int intervalMin, int intervalMax)
                 {
                     _executor = executor;
                     if (groupSize <= 0)
@@ -239,7 +243,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger
                     _triggerParameter = triggerParameter;
                     _queue = queue;
                     _poisonQueue = poisonQueue;
-                    _delayStrategy = new RandomizedExponentialBackoffStrategy(QueuePollingIntervals.Minimum, QueuePollingIntervals.DefaultMaximum);
+                    _delayStrategy = new RandomizedExponentialBackoffStrategy(intervalMin==0?QueuePollingIntervals.Minimum:TimeSpan.FromMinutes(intervalMin), intervalMax==0?QueuePollingIntervals.DefaultMaximum:TimeSpan.FromMinutes(intervalMax));
                     this._timer = new TaskSeriesTimer((ITaskSeriesCommand)this, Task.Delay(0));
                 }
                 /// <summary>
@@ -323,33 +327,21 @@ namespace Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger
                     IEnumerable<WindowsAzure.Storage.Queue.CloudQueueMessage> batch;
                     try
                     {
-                        batch = await this._queue.GetMessagesAsync(this._groupSize, new TimeSpan?(visibilityTimeout), (QueueRequestOptions)null, (OperationContext)null, cancellationToken);
+                        batch = await this._queue.GetMessagesAsync(this._groupSize, new TimeSpan?(visibilityTimeout), (QueueRequestOptions)null, (OperationContext)null, cancellationToken);                        
                     }
                     catch (StorageException ex)
                     {
                         throw;
                     }
-                    if (batch == null)
+                    if (batch == null || !batch.Any())
                     {
                         seriesCommandResult = this.CreateBackoffResult();
                     }
                     else
                     {
-                        bool foundMessage = batch.Any();
-                        if (foundMessage)
-                        {
-                            this._processing.Add(this.ProcessMessageAsync(batch.ToList(), visibilityTimeout, cancellationToken));
-                        }
-                       
-                        if (!foundMessage)
-                        {
-                            seriesCommandResult = this.CreateBackoffResult();
-                        }
-                        else
-                        {
-                            this._foundMessageSinceLastDelay = true;
-                            seriesCommandResult = this.CreateSucceededResult();
-                        }
+                        this._processing.Add(this.ProcessMessageAsync(batch.ToList(), visibilityTimeout, cancellationToken));
+                        this._foundMessageSinceLastDelay = true;
+                        seriesCommandResult = this.CreateSucceededResult();
                     }
                     
                     return seriesCommandResult;
