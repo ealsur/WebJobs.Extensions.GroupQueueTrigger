@@ -155,12 +155,8 @@ namespace Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger
                 return new GroupQueueTriggerParameterDescriptor
                 {
                     Name = _parameter.Name,
-                    DisplayHints = new ParameterDisplayHints
-                    {
-                        Prompt = "Enter a QueueMessage on JSON format",
-                        Description = string.Format("New message on queue {0}",_queue),
-                        DefaultValue = JsonConvert.SerializeObject(new WindowsAzure.Storage.Queue.CloudQueueMessage(""))
-                    }
+                    Type="GroupQueueTrigger",
+                    QueueName = _queue.Name
                 };
             }
             
@@ -169,9 +165,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger
             /// </summary>
             private class GroupQueueTriggerParameterDescriptor : TriggerParameterDescriptor
             {
+                public string QueueName { get; set; }
                 public override string GetTriggerReason(IDictionary<string, string> arguments)
                 {
-                    return string.Format("{0} at {1}",this.DisplayHints.Description, DateTime.UtcNow.ToString("o"));
+                    return string.Format("New message on queue {0} at {1}",QueueName, DateTime.UtcNow.ToString("o"));
                 }
             }
 
