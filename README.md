@@ -20,6 +20,10 @@ And decorate each function like this:
 
 This way you will only get **one trigger** of the function and receive all the obtained messages, instead of one trigger per message with the `[QueueTrigger]`.
 
-There's an optional parameter that's the **size** of the requested block:
+There are optional parameters too: the **size** of the requested block:
 
 `public static void MyFunction([GroupQueueTrigger("my_queue", 10)]List<MyClass> messages)`
+
+And the Minimun and Maximun Polling **intervals** (in minutes):
+
+`public static void MyFunction([GroupQueueTrigger("my_queue", 10, 1, 10)]List<MyClass> messages)`
