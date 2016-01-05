@@ -1,0 +1,15 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "Azure Webjobs SDK Extension for Triggering a Group of Messages",
+  "authors": [ "ealsur" ],
+  "tags": [ "azure", "webjobs", "extensions" ],
+  "projectUrl": "https://github.com/ealsur/WebJobs.Extensions.GroupQueueTrigger",
+  "licenseUrl": "https://github.com/ealsur/WebJobs.Extensions.GroupQueueTrigger/blob/master/LICENSE",
+  "frameworks": {
+    "net451": { }
+  },
+  "dependencies": {
+    "Microsoft.Azure.WebJobs.Extensions": "1.0.0",
+    "WindowsAzure.Storage": "6.2.0"
+  }
+}
