@@ -6,7 +6,8 @@
   "projectUrl": "https://github.com/ealsur/WebJobs.Extensions.GroupQueueTrigger",
   "licenseUrl": "https://github.com/ealsur/WebJobs.Extensions.GroupQueueTrigger/blob/master/LICENSE",
   "frameworks": {
-    "net451": { }
+    "net451": { },
+    "dnx451": { }
   },
   "dependencies": {
     "Microsoft.Azure.WebJobs.Extensions": "1.0.0",

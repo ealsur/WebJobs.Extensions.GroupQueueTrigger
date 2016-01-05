@@ -16,5 +16,6 @@
       <dependency id="Microsoft.Azure.WebJobs.Extensions" version="1.0.0" />
 	  <dependency id="WindowsAzure.Storage" version="6.2.0" />
     </dependencies>
+    
   </metadata>
 </package>
