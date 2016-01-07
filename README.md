@@ -36,6 +36,6 @@ And the Minimun and Maximun Polling **intervals** (in minutes):
 
 You can obtain it [through Nuget](https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger/) with:
 
-`Install-Package Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger
+    Install-Package Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger
 
 Or **clone** this repo and reference it.
