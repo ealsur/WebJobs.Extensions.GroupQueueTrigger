@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This extension will enable you to trigger funcions and receive the group of messages instead of a single message like with `[QueueTrigger]`
+This extension will enable you to **trigger** functions and receive the **group of messages** instead of a single message like with `[QueueTrigger]`
 
 Once referenced you can enable it on the `JobHostConfiguration` object.
 
