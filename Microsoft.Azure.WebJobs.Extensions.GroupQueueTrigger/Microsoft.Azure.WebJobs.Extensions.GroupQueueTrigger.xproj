@@ -9,7 +9,7 @@
     <ProjectGuid>a7355d41-3e2a-4d16-9248-3e9066585f0e</ProjectGuid>
     <RootNamespace>Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">..\artifacts\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
-    <OutputPath Condition="'$(OutputPath)'=='' ">..\artifacts\bin\$(MSBuildProjectName)\</OutputPath>
+    <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
