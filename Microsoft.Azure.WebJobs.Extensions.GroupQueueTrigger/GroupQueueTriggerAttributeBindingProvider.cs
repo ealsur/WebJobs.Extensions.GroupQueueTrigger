@@ -130,14 +130,24 @@ namespace Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger
                 {
                     throw new InvalidOperationException("Unable to convert trigger to CloudQueueMessage:"+ex.Message);
                 }
-                //We read the AsString value, since it contains the JSON Serialized POCO object
-                var invokeString = string.Format("[{0}]", string.Join(",", output.Select(x => x.AsString).ToArray()));                
-                var deserializedObject = JsonConvert.DeserializeObject(invokeString, _parameter.ParameterType);
-                //Deserialize the JSON POCO array
-                var valueProvider = new GroupQueueValueBinder(_parameter.ParameterType, deserializedObject, invokeString);
-                var bindingData = _bindingDataProvider.GetBindingData(valueProvider.GetValue());
-                //Trigger the User Function with the data
-                return new TriggerData(valueProvider, bindingData);
+                
+                var invokeString = string.Format("[{0}]", string.Join(",", output.Select(x => x.AsString).ToArray()));
+                if (_parameter.ParameterType.Equals(typeof(String)))
+                {
+                    var valueProvider = new GroupQueueValueBinder(_parameter.ParameterType, invokeString, invokeString);
+                    var bindingData = _bindingDataProvider.GetBindingData(valueProvider.GetValue());
+                    return new TriggerData(valueProvider, bindingData);
+                }
+                else
+                {
+                    //We read the AsString value, since it contains the JSON Serialized POCO object
+                    var deserializedObject = JsonConvert.DeserializeObject(invokeString, _parameter.ParameterType);
+                    //Deserialize the JSON POCO array
+                    var valueProvider = new GroupQueueValueBinder(_parameter.ParameterType, deserializedObject, invokeString);
+                    var bindingData = _bindingDataProvider.GetBindingData(valueProvider.GetValue());
+                    //Trigger the User Function with the data
+                    return new TriggerData(valueProvider, bindingData);
+                }
             }
             
             /// <summary>
