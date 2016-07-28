@@ -134,7 +134,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger
                 var invokeString = string.Format("[{0}]", string.Join(",", output.Select(x => x.AsString).ToArray()));
                 if (_parameter.ParameterType.Equals(typeof(List<String>)))
                 {
-                    invokeString = string.Format("[{0}]", string.Join(",", output.Select(x => string.Format("\"{0}\"",x.AsString)).ToArray()));
+                    invokeString = string.Format("[{0}]", string.Join(",", output.Select(x => !x.AsString.StartsWith("\"")?string.Format("\"{0}\"",x.AsString):x.AsString).ToArray()));
                 }
                 //We read the AsString value, since it contains the JSON Serialized POCO object
                 var deserializedObject = JsonConvert.DeserializeObject(invokeString, _parameter.ParameterType);
