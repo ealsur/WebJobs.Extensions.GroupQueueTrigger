@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Azure Webjobs SDK Extension for Triggering a Group of Messages</Description>
+    <VersionPrefix>1.0.9</VersionPrefix>
+    <Authors>ealsur</Authors>
+    <TargetFramework>net461</TargetFramework>
+    <AssemblyName>Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger</AssemblyName>
+    <PackageId>Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger</PackageId>
+    <PackageTags>azure;webjobs;extensions</PackageTags>
+    <PackageProjectUrl>https://github.com/ealsur/WebJobs.Extensions.GroupQueueTrigger</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/ealsur/WebJobs.Extensions.GroupQueueTrigger/blob/master/LICENSE</PackageLicenseUrl>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="1.0.0" />
+    <PackageReference Include="WindowsAzure.Storage" Version="6.2.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>
