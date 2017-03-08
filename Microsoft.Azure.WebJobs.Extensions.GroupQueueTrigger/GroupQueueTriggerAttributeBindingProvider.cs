@@ -211,7 +211,12 @@ namespace Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger
                     return _value;
                 }
 
-                public string ToInvokeString()
+				public Task<object> GetValueAsync()
+				{
+					return Task.FromResult<object>(_value);
+				}
+
+				public string ToInvokeString()
                 {
                     return _invokeString;
                 }
@@ -335,7 +340,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger
                     {
                         batch = await this._queue.GetMessagesAsync(this._groupSize, new TimeSpan?(visibilityTimeout), (QueueRequestOptions)null, (OperationContext)null, cancellationToken);                        
                     }
-                    catch (StorageException ex)
+                    catch (StorageException)
                     {
                         throw;
                     }
@@ -387,10 +392,10 @@ namespace Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger
                             }                            
                         }
                     }
-                    catch (OperationCanceledException ex)
+                    catch (OperationCanceledException)
                     {
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         throw;
                     }

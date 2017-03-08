@@ -10,11 +10,11 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Azure Webjobs SDK Extension for Triggering a Group of Messages</description>
     <releaseNotes>Initial release.</releaseNotes>
-    <copyright>Copyright 2016. Ealsur.</copyright>
+    <copyright>Copyright 2017. Ealsur.</copyright>
     <tags>azure webjobs extensions</tags>
     <dependencies>
-      <dependency id="Microsoft.Azure.WebJobs.Extensions" version="1.0.0" />
-	  <dependency id="WindowsAzure.Storage" version="6.2.0" />
+      <dependency id="Microsoft.Azure.WebJobs.Extensions" version="2.0.0" />
+			<dependency id="WindowsAzure.Storage" version="7.2.1" />
     </dependencies>
     
   </metadata>

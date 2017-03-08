@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>Azure Webjobs SDK Extension for Triggering a Group of Messages</Description>
-    <VersionPrefix>1.0.9</VersionPrefix>
+    <VersionPrefix>2.0.0</VersionPrefix>
     <Authors>ealsur</Authors>
     <TargetFramework>net461</TargetFramework>
     <AssemblyName>Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger</AssemblyName>
@@ -16,11 +16,12 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <Version>2.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="1.0.0" />
-    <PackageReference Include="WindowsAzure.Storage" Version="6.2.0" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="2.0.0" />
+    <PackageReference Include="WindowsAzure.Storage" Version="7.2.1" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
