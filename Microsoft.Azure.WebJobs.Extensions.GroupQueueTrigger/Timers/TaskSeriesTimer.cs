@@ -85,7 +85,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger.Timers
                         {
                             Task task = await Task.WhenAny(wait, (Task)cancellationTaskSource.Task);
                         }
-                        catch (OperationCanceledException ex)
+                        catch (OperationCanceledException)
                         {
                         }
                     }
@@ -96,7 +96,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger.Timers
                             TaskSeriesCommandResult result = await this._command.ExecuteAsync(cancellationToken);
                             wait = result.Wait;
                         }
-                        catch (OperationCanceledException ex)
+                        catch (OperationCanceledException)
                         {
                         }
                     }
@@ -104,7 +104,7 @@ namespace Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger.Timers
                         break;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
