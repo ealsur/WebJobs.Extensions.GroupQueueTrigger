@@ -39,7 +39,7 @@ namespace Microsoft.Azure.WebJobs
         /// </summary>
         /// <param name="queueName">Name of the Queue</param>
         /// <param name="size">Maximun group size</param>
-        /// <param name="minInterval">Minimun queue polling interval (in minutes). Default is 2 seconds.</param>
+        /// <param name="minInterval">Minimun queue polling interval (in minutes). Default is 100 milliseconds (Azure Storage QueuePollingIntervals.Minimum).</param>
         /// <param name="maxInterval">Maximun queue polling interval (in minutes). Default is 1 minute.</param>
         public GroupQueueTriggerAttribute(string queueName, int size, int minInterval, int maxInterval)
         {
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.WebJobs
         /// Triggers an event with a group of messages
         /// </summary>
         /// <param name="queueName">Name of the Queue</param>
-        /// <param name="minInterval">Minimun queue polling interval (in minutes). Default is 2 seconds.</param>
+        /// <param name="minInterval">Minimun queue polling interval (in minutes). Default is 100 milliseconds (Azure Storage QueuePollingIntervals.Minimum).</param>
         /// <param name="maxInterval">Maximun queue polling interval (in minutes). Default is 1 minute.</param>
         public GroupQueueTriggerAttribute(string queueName, int minInterval, int maxInterval)
         {
@@ -73,7 +73,7 @@ namespace Microsoft.Azure.WebJobs
         public string QueueName { get; private set; }
 
         /// <summary>
-        /// Minimun queue polling interval (in minutes). Default is 2 seconds.
+        /// Minimun queue polling interval (in minutes). Default is 100 milliseconds (Azure Storage QueuePollingIntervals.Minimum)
         /// </summary>
         public int MinQueuePollingInterval { get; private set; }
 
