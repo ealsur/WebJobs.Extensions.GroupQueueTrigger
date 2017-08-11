@@ -14,7 +14,7 @@
     <tags>azure webjobs extensions</tags>
     <dependencies>
       <dependency id="Microsoft.Azure.WebJobs.Extensions" version="2.0.0" />
-			<dependency id="WindowsAzure.Storage" version="7.2.1" />
+			<dependency id="WindowsAzure.Storage" version="8.3.0" />
     </dependencies>
     
   </metadata>

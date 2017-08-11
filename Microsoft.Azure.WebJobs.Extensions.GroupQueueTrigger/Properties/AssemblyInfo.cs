@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Azure Webjobs SDK Extension for Triggering a Group of Messages")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Microsoft.Azure.WebJobs.Extensions.GroupQueueTrigger")]
